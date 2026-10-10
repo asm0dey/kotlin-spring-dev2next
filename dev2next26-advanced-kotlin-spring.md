@@ -44,14 +44,25 @@ meaning something to the Kotlin compiler."
 layout: statement
 ---
 
-# Is this flag in a build file you own?
+# Who writes Spring in Kotlin?
+
+<v-click>
+
+## Is this flag in a build file you own?
+
+</v-click>
 
 <!--
-Make them commit.
+"Hands up if you write Spring in Kotlin. At work, or at night, both count."
 
-"Hands up if that flag is in a build file you own right now."
+Count aloud: M. If the room is mostly Java: "Good. Everything today is about
+what Spring took off Kotlin's plate, and half of it applies to you too."
 
-Count aloud. An actual number, not "a lot of you".
+[click] Make them commit.
+
+"Keep it up only if that flag is in a build file you own right now."
+
+Count aloud again: N. An actual number, not "a lot of you".
 Then WAIT. Do not resolve it. Let them sit in the yes.
 
 "Keep that hand up for a second. I want you to remember you raised it."
@@ -1753,8 +1764,8 @@ image: /slide-2024-jsr305-struck.png
 ---
 
 <!--
-"Fifty minutes ago I asked who had this in a build file, and [N] of you
-put a hand up." — say the actual number you counted at the start.
+"Fifty minutes ago I asked who had this in a build file, [M] of you said you
+write Spring in Kotlin, and [N] of you had this flag." — the two numbers you counted at the start.
 
 -->
 
