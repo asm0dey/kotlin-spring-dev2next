@@ -31,7 +31,7 @@ image: /slide-2024-jsr305.png
 <!--
 No greeting. No name. Nothing.
 
-[click] Let it sit for a full three seconds before speaking.
+Let it sit for a full three seconds before speaking.
 
 "If you write Kotlin with Spring, you have seen this slide. Maybe from me.
 This is the single most repeated piece of Kotlin-and-Spring advice of the last
@@ -99,8 +99,6 @@ its job: make Spring's Java API null-safe in your Kotlin — at <b>compile time<
 </v-click>
 
 <!--
-the reveal. Pays off the-flag plant.
-
 [click] "Spring Framework 7 annotates its entire API with JSpecify.
 Not JSR-305. JSpecify."
 
@@ -109,11 +107,10 @@ strictly, on its own, with no flag."
 
 (beat)
 
-"So the flag is not wrong. It is not harmful. It is unemployed. It is doing a
+[click] "So the flag is not wrong. It is not harmful. It is unemployed. It is doing a
 job that the compiler and the framework now do without being asked."
 
-WALK-AROUND register A — this is the precision/evidence claim. The doc quotes
-are the proof. Do not paraphrase them.
+The doc quotes are the proof. Do not paraphrase them.
 
 IF ASKED "wasn't that flag what made request validation work?" — it was not,
 and this is worth being precise about because half the blog posts filed it
@@ -155,7 +152,9 @@ JSpecify applies to **type usage** — so it can say `List<@Nullable String>` an
 
 <!--
 "The org.springframework.lang annotations are deprecated in favour of
-JSpecify. And this is not a rename. Spring's annotations applied to a field, a
+JSpecify."
+
+[click] "And this is not a rename. Spring's annotations applied to a field, a
 parameter, a return value. JSpecify annotations apply to a type usage."
 
 [click] "Which means JSpecify can express a non-null list of nullable strings,
@@ -280,6 +279,12 @@ sample/
 <!--
 "One nano-service. Not six unrelated snippets — one codebase, and
 every comparison today is a diff against it."
+
+[click] The domain.
+[click] One repository, two ways: JDBC and R2DBC.
+[click] An HTTP client.
+[click] Bean registration and security.
+[click] The build file — next slide.
 -->
 
 ---
@@ -341,14 +346,14 @@ are on the same version."
 </div>
 
 <div class="mt-5 pt-3 border-t border-gray-700 text-sm">
-<span class="opacity-60">still to sort:</span> extensions & varargs · coroutines · the bean DSL · the security DSL · HTTP clients
+<span class="opacity-60">still to sort:</span> extensions & varargs · coroutines · the bean DSL · the security DSL · HTTP clients · JSON · tests
 </div>
 
 <!--
 This table returns at the end of every chapter with one
 more row filled.
 
-"One row already filled. Five to go. Every chapter ends here, and by the last
+[click] "One row already filled. Seven to go. Every chapter ends here, and by the last
 one you will have a rule you can apply to code I have never seen."
 -->
 
@@ -410,6 +415,8 @@ the queries in my own applications look like. The toy on the previous slide is
 standing in for this. Everything that is annoying at one parameter is
 unbearable at nine."
 
+[click] (scrolls to the WHERE) "Two values. That is all this monster needs."
+
 Costs ~40s. First cut if the opening overruns.
 -->
 
@@ -450,8 +457,8 @@ public List<Person> findById(int userId) {
 ````
 
 <!--
-[state 1] "A whole class to turn a row into an object. So we inline it."
-[state 2] "Better. And now look where userId ended up. Seven lines below the
+"A whole class to turn a row into an object. So we inline it."
+[click] "Better. And now look where userId ended up. Seven lines below the
 question mark it fills."
 -->
 
@@ -467,9 +474,9 @@ public <T> List<T> query(
 ```
 
 <!--
-GUESS-FIRST (light).
+"It is not Spring's fault and it is not a bad API."
 
-"It is not Spring's fault and it is not a bad API. In Java a vararg can only be
+[click] "In Java a vararg can only be
 the last parameter. The mapper is not the last thing conceptually, but it has
 to be second, because args has to be last."
 
@@ -491,11 +498,11 @@ jdbcTemplate.query("SELECT * FROM users WHERE id = ?", userId) { rs, _ ->
 ```
 
 <!--
-"Query, then its parameter, then the mapper as a block. Two things
-make that legal, and neither of them is a Spring feature."
+[click] "Query, then its parameter, then the mapper as a block. Two things
+make that legal, and neither of them is a Spring feature. A vararg does not
+have to be last in Kotlin."
 
-"A vararg does not have to be last in Kotlin. And a trailing lambda moves
-outside the parentheses, so the mapper reads as a body rather than an argument.
+[click] "And a trailing lambda moves outside the parentheses, so the mapper reads as a body rather than an argument.
 The underscore is the unused index."
 -->
 
@@ -518,11 +525,15 @@ fun <T> JdbcOperations.query(
 </v-click>
 
 <!--
-TRAVELING HIGHLIGHTS, four steps: receiver, sql, vararg position,
-trailing function parameter.
+"An extension function on the Java interface."
 
-"An extension function on the Java interface. Spring ships it, in spring-jdbc,
-and this is the part I want you to take: there is nothing privileged about it."
+[click] The receiver: JdbcOperations.
+[click] The SQL.
+[click] The vararg — not last.
+[click] The function — last, so it can trail.
+
+[click] "Spring ships it, in spring-jdbc, and this is the part I want you to
+take: there is nothing privileged about it."
 -->
 
 ---
@@ -548,7 +559,9 @@ fun StringUtils.transformStrings(
 </v-click>
 
 <!--
-"You can do this to any Java API you depend on and cannot change. It is one
+"Some library you depend on and cannot change. Mapper first, varargs last."
+
+[click] "You can do this to any Java API you depend on and cannot change. It is one
 file. It does not require the library author's permission, a pull request, or
 a fork."
 
@@ -590,7 +603,7 @@ vararg reordering<br/>
 </div>
 
 <div class="mt-5 pt-3 border-t border-gray-700 text-sm">
-<span class="opacity-60">still to sort:</span> coroutines · the bean DSL · the security DSL · HTTP clients
+<span class="opacity-60">still to sort:</span> coroutines · the bean DSL · the security DSL · HTTP clients · JSON · tests
 </div>
 
 <v-click>
@@ -606,7 +619,9 @@ Ask BEFORE revealing the tick.
 (wait for the call — this one is easy and they should get it right,
 which is the point)
 
-[click] "Leverage. And here is the test that gets you there without me: could a
+[click] "Leverage."
+
+[click] "And here is the test that gets you there without me: could a
 framework release make this unnecessary? No. So it compounds."
 -->
 
@@ -672,6 +687,10 @@ fun findAll(): Flow<User>
 </v-click>
 
 <!--
+[click] Mono<Void> becomes a suspend fun.
+[click] Mono<T> becomes a suspend fun returning T.
+[click] Flux<T> becomes a function returning Flow<T>.
+
 "That is the entire translation table. Three rows. If you can read a
 reactive signature you can now read a coroutine one."
 
@@ -723,8 +742,11 @@ class Repo(connectionFactory: ConnectionFactory) {
 ````
 
 <!--
-"Class shell. Client. A suspend function. The chain. And awaitSingle, which is
-another extension function — the same leverage we just sorted, applied inside
+"Class shell."
+
+[click] "Client."
+[click] "A suspend function."
+[click] "The chain. And awaitSingle, which is another extension function — the same leverage we just sorted, applied inside
 Spring itself."
 
 "No Mono anywhere in the signature. Nothing on this slide has changed in four
@@ -776,7 +798,10 @@ suspend fun seed() = tx.executeAndAwait {
 </v-click>
 
 <!--
-"Every method is either suspend or returns Flow. That is the whole rule for coroutine repositories."
+"A coroutine repository."
+
+[click] "One result: suspend."
+[click] "Many results: Flow. That is the whole rule for coroutine repositories."
 
 [click] "And @Transactional over a suspend function works. From the caller's
 side, nothing about transactions changed."
@@ -815,7 +840,9 @@ Two things worth saying out loud here:
 "Here is the part that is genuinely new, and it is new because it only shows up
 after you take that advice and run it in production for a year."
 
-"Your trace ids vanish. Micrometer propagates the current observation through a
+[click] "Your trace ids vanish. First line has one, second line is empty."
+
+[click] "Micrometer propagates the current observation through a
 ThreadLocal for blocking code and through the Reactor context for reactive
 pipelines. A suspend function resumes on whatever thread is free, and neither
 mechanism follows it."
@@ -843,9 +870,14 @@ runBlocking(Dispatchers.IO + PropagationContextElement()) {
 </v-click>
 
 <!--
-"PropagationContextElement is a coroutine context element that
-carries the Micrometer context across suspension points. Add it to the context,
-or turn on automatic propagation globally and stop thinking about it."
+[click] "One dependency."
+
+[click] "PropagationContextElement is a coroutine context element that
+carries the Micrometer context across suspension points. Add it to the context."
+
+[click] "Or turn on automatic propagation globally and stop thinking about it."
+
+[click] "And the trace id survives the suspension."
 
 "File this one. It is the single most common thing that makes teams give up on
 coroutines in Spring, and it is four words of configuration."
@@ -888,17 +920,17 @@ coroutines<br/>
 </div>
 
 <div class="mt-5 pt-3 border-t border-gray-700 text-sm">
-<span class="opacity-60">still to sort:</span> the bean DSL · the security DSL · HTTP clients
+<span class="opacity-60">still to sort:</span> the bean DSL · the security DSL · HTTP clients · JSON · tests
 </div>
 
 <!--
-"Leverage — suspend and Flow are language features and no Spring release makes
+[click] "Leverage — suspend and Flow are language features and no Spring release makes
 them unnecessary."
 
 (beat)
 
 "But hold that tick loosely. Something happened to the reason we reached for
-them, and we come back to it after the break."
+them, and we come back to it later today."
 -->
 
 ---
@@ -936,8 +968,9 @@ val beans = beans {
 </v-click>
 
 <!--
-"Four lines and an annotation, to say: this bean is that call. In
-the functional DSL it is the call."
+"Four lines and an annotation, to say: this bean is that call."
+
+[click] "In the functional DSL it is the call."
 -->
 
 ---
@@ -961,13 +994,15 @@ val beans = beans {
 ```
 
 <!--
-"A constructor reference is a bean definition. And the third one is
-the real argument: that is an if, at registration time, in the language. Not a
-SpEL string, not a @Conditional class. An if."
+[click] "A plain class. No annotations."
 
-The Norway/Well joke did not land in
-2024. The isLazyInit = Random.nextBoolean() carries the argument on its own.
-Consider cutting the string values to something neutral.
+[click] "The mapper bean from the previous slide."
+
+[click] "A constructor reference is a bean definition."
+
+[click] "And the third one is the real argument: that is an if, at
+registration time, in the language. Not a SpEL string, not a @Conditional
+class. An if."
 -->
 
 ---
@@ -996,10 +1031,11 @@ measured here — if it matters to you, measure it yourself.
 </v-click>
 
 <!--
-BACKTRACKING to the main function from slide 8.
+"Back to the main function."
 
-"Back to the very first file we looked at. One block on runApplication, and it
-starts. In 2024 this is where the section got its applause."
+[click] "One block on runApplication —"
+
+[click] "— and it starts. In 2024 this is where the section got its applause."
 -->
 
 ---
@@ -1035,11 +1071,11 @@ No qualifying bean of type
 <img src="/test-explodes.png" v-click="1" class="w-full ml-8 mt-6">
 
 <!--
-click order is: test code (base) → the blow-up (1) → the error text (2).
-The image is the reveal; the message is the detail. Do not read the error before
-the picture has landed.
+"So you write a test."
 
-"@SpringBootTest never calls main."
+[click] (the explosion — let the picture land first)
+
+[click] (the error text) "@SpringBootTest never calls main."
 
 (beat — let that land on its own)
 
@@ -1064,9 +1100,12 @@ context.initializer.classes: "com.example.BeansInitializer"
 ```
 
 <!--
-"A DSL, a class whose only job is to hand the DSL to a context, and
-a string in a yaml file that names that class. Three artifacts, one of them
-stringly-typed, to make one DSL work everywhere."
+[click] "A DSL,"
+
+[click] "a class whose only job is to hand the DSL to a context,"
+
+[click] "and a string in a yaml file that names that class. Three artifacts,
+one of them stringly-typed, to make one DSL work everywhere."
 
 "I taught this in 2024 with a straight face, because it was the answer."
 
@@ -1121,13 +1160,10 @@ class AppBeans : BeanRegistrarDsl({
 ````
 
 <!--
-MAGIC MOVE on the SAME three beans from slide 34. Do not introduce
-new names here; the whole point is that only the registration mechanism moves.
-
-[before the click] "Same three beans. The mapper, the logger, the one whose
+"Same three beans. The mapper, the logger, the one whose
 laziness is decided by a coin flip at startup."
 
-[click — let the morph play, then walk the three changes]
+[click] (let the morph play, then walk the three changes)
 
   bean { }                    →  registerBean { }
   bean(::JsonLogger)          →  registerBean { JsonLogger(bean()) }
@@ -1169,8 +1205,6 @@ class MyConfiguration
 [click] "The initializer class goes. The yaml property goes. And because it is
 an @Import, it is in the context the same way in main and in @SpringBootTest,
 so the failure two slides ago cannot happen."
-
-WALK-AROUND register B — this is the process/sequence claim.
 -->
 
 ---
@@ -1236,14 +1270,16 @@ the DSL glue<br/>
 </div>
 
 <div class="mt-5 pt-3 border-t border-gray-700 text-sm">
-<span class="opacity-60">still to sort:</span> the security DSL · HTTP clients
+<span class="opacity-60">still to sort:</span> the security DSL · HTTP clients · JSON · tests
 </div>
 
 <!--
-"This is the first one that splits. The DSL is leverage — a Kotlin lambda with
-a receiver, which no framework release makes unnecessary."
+"This is the first one that splits."
 
-"The initializer and the yaml property were scaffolding around a hole, and the
+[click] "The DSL is leverage — a Kotlin lambda with a receiver, which no
+framework release makes unnecessary."
+
+[click] "The initializer and the yaml property were scaffolding around a hole, and the
 hole is filled. Same section of the same talk, one row in each column. That is
 why the sorting question is worth asking per technique and not per chapter."
 -->
@@ -1290,7 +1326,9 @@ class MyBeanRegistrar : BeanRegistrarDsl({
 ````
 
 <!--
-"The Security DSL nests inside the bean registration DSL, because
+"A SecurityFilterChain bean, registered in the bean DSL."
+
+[click] "The Security DSL nests inside the bean registration DSL, because
 both are the same Kotlin feature: a lambda with a receiver."
 
 "This is why the bean DSL was worth Spring fixing. Not because @Bean methods
@@ -1378,7 +1416,7 @@ authorizeRequests<br/>
 </div>
 
 <div class="mt-5 pt-3 border-t border-gray-700 text-sm">
-<span class="opacity-60">still to sort:</span> HTTP clients
+<span class="opacity-60">still to sort:</span> HTTP clients · JSON · tests
 </div>
 
 <!--
@@ -1425,8 +1463,9 @@ The carrier thread is released and runs someone else.
 
 <!--
 "Notice what my 2024 argument actually rested on. Not that
-coroutines are elegant — that the alternative was unacceptable. Loom removed
-the alternative's cost, so the argument has to be re-made rather than repeated."
+coroutines are elegant — that the alternative was unacceptable."
+
+[click] "Loom removed the alternative's cost, so the argument has to be re-made rather than repeated."
 -->
 
 ---
@@ -1455,8 +1494,13 @@ Requires Java 21+ &nbsp;·&nbsp; but see the next slide for why you want 24+
 
 <!--
 "One property, available since Boot 3.2 and unchanged in 4. It is
-not a niche switch — it rewires how requests are handled, which executor runs
-your @Async methods, and how your Kafka listeners get threads."
+not a niche switch — it rewires"
+
+[click] "how requests are handled,"
+[click] "which executor runs your @Async methods,"
+[click] "and how your Kafka listeners get threads."
+
+[click] "Java 21 is enough to turn it on. The next slide is why you want 24."
 -->
 
 ---
@@ -1519,13 +1563,19 @@ HikariCP and Caffeine moved to <code>ReentrantLock</code>. JEP 491 fixed that in
 <!--
 Deliberately unhurried. Do not rush this list.
 
-"Virtual threads make blocking cheap. They do not make computation faster, they
-do not give you a way to say slow down, and they do not give you a scope that
-cancels its children when one fails."
+"Virtual threads make blocking cheap."
 
-"And the honest one: if your pool is fifty connections, ten thousand virtual
-threads queue on fifty connections. Loom moved the bottleneck. It did not
-delete it."
+[click] "They do not make computation faster,"
+[click] "they do not give you a way to say slow down,"
+[click] "and they do not give you a scope that cancels its children when one
+fails — not a stable one."
+[click] "A native frame still pins the carrier thread."
+[click] "And the honest one: if your pool is fifty connections, ten thousand
+virtual threads queue on fifty connections. Loom moved the bottleneck. It did
+not delete it."
+
+[click] (footnote — only if someone asks) structured concurrency is still a
+preview in Java; on JDK 21–23 synchronized pinned too, JEP 491 fixed it in 24.
 -->
 
 ---
@@ -1576,7 +1626,9 @@ cancellation or back-pressure</b> — not for "non-blocking".
 </style>
 
 <!--
-This is the sentence people will quote in the hallway. Deliver it
+"Two ways to fetch two things at once. One of them has been stable since 2018."
+
+[click] This is the sentence people will quote in the hallway. Deliver it
 slowly and do NOT qualify it afterwards.
 
 "They are not competitors. Coroutines can run on virtual threads. But if you
@@ -1643,13 +1695,17 @@ interface GitHubService {
 <!--
 "An interface. No implementation, and you never write one."
 
-[click on suspend] "suspend on an interface method. The proxy handles it."
+[click] "The base URL lives on the interface."
 
-[click on the search signature — BOTH lines are lit, which is the point]
+[click] "One endpoint, one method."
+
+[click] "suspend on an interface method. The proxy handles it."
+
+[click] (both lines lit, which is the point)
 "q is not nullable, so it is required. sort is nullable, so it is optional. The nullability of the type carries the decision that in Java needs
 a required=false attribute."
 
-[final click — the legend] Say this out loud, do not let them assume otherwise:
+[click] (the legend) Say this out loud, do not let them assume otherwise:
 "The interface and the annotations are Spring, not Kotlin. Java gets exactly
 this. What Kotlin adds is the three things in green — suspend on an interface
 method, nullability standing in for required=false, and Flow instead of Flux."
@@ -1681,8 +1737,6 @@ it</b> — and until Boot 4 that something was you.
 </v-click>
 
 <!--
-BACKTRACKING to main, third time.
-
 "Here is the thing nobody tells you: that interface is not a bean. It has no
 implementation. Somebody has to generate a proxy for it and put that proxy in
 the context."
@@ -1692,11 +1746,15 @@ RestClientAdapter, feed that to HttpServiceProxyFactory.builderFor(...), call
 createClient for every single interface, and register each result as a bean.
 Roughly ten lines per client, and every project wrote them."
 
-"@ImportHttpServices scans the package and does all of it. That is why the
+[click] (line 1 — the import) "One annotation, from a package you have not
+seen before."
+
+[click] (line 4) "@ImportHttpServices scans the package and does all of it. That is why the
 annotation exists, and the ten lines it replaces were textbook scaffolding."
 
-"And note where we are: back in the main function, for the third time today.
-Same file, three different lessons."
+[click] "And note where we are: back in the main function, for the third time
+today. Same file, three different lessons. An interface is not a bean — and
+until Boot 4, the thing that made it one was you."
 -->
 
 ---
@@ -1748,14 +1806,472 @@ proxy-factory wiring<br/>
 </div>
 </div>
 
+<div class="mt-5 pt-3 border-t border-gray-700 text-sm">
+<span class="opacity-60">still to sort:</span> JSON · tests
+</div>
+
 <!--
 Ask, then WAIT.
 
 "Leverage or scaffolding?"
 
-"Both. The interface is framework — Java gets it too. The suspend and the
-nullable parameter are language, and they are why the Kotlin version reads
-better than the Java one."
+"Both."
+
+[click] "The suspend and the nullable parameter are language, and they are why
+the Kotlin version reads better than the Java one."
+
+[click] "The proxy wiring is framework, and Boot does it now."
+-->
+
+---
+layout: section
+---
+
+# JSON
+
+## kotlinx.serialization, wired for you
+
+---
+
+# 2024: you wire the converter
+
+```kotlin {all|2|6}
+@Configuration
+class JsonConfig : WebMvcConfigurer {
+  override fun extendMessageConverters(
+    converters: MutableList<HttpMessageConverter<*>>,
+  ) {
+    converters.add(0, KotlinSerializationJsonHttpMessageConverter())
+  }
+}
+```
+
+<v-click>
+
+<div class="mt-6 text-lg">
+Spring ships the converter — and doesn't register it, because it <b>conflicts with Jackson</b>.
+</div>
+
+</v-click>
+
+<!--
+"If you wanted kotlinx.serialization instead of Jackson in 2024, this was
+your file."
+
+[click] "A WebMvcConfigurer, just to get at the converter list."
+
+[click] "And index zero. Not add — add at zero. Put it anywhere else and
+Jackson answers first, and you spend an afternoon wondering why your
+annotations do nothing."
+
+[click] "Spring has had this converter for years. It just will not turn it
+on for you, because it fights with Jackson for the same content type."
+-->
+
+---
+
+# Boot 4: one dependency
+
+```kotlin
+implementation("org.springframework.boot:spring-boot-starter-kotlinx-serialization-json")
+```
+
+<v-click>
+
+```yaml
+spring.kotlinx.serialization.json:
+  ignore-unknown-keys: true
+  naming-strategy: snake-case
+```
+
+</v-click>
+
+<v-click>
+
+<div class="mt-6 text-lg">
+A <code>Json</code> bean from properties. The converter goes <b>ahead of Jackson</b> — Jackson stays as the fallback.
+</div>
+
+</v-click>
+
+<!--
+"Boot 4 has a starter for it."
+
+[click] "The Json instance is a bean now, and its knobs are properties. The
+same knobs you used to set in a Json { } builder in that config class."
+
+[click] "And the converter is registered for you, in front of Jackson. The
+config class from the previous slide is gone."
+-->
+
+---
+
+# The part that was never glue
+
+```kotlin {all|2|5}
+plugins {
+  kotlin("plugin.serialization") version "2.4.21"
+}
+
+@Serializable
+data class Person(val id: Int, val name: String, val age: Double)
+```
+
+<v-click>
+
+<div class="mt-6 text-lg">
+The serializer is <b>generated by the compiler</b>. No reflection at runtime.
+</div>
+
+</v-click>
+
+<!--
+"Now the part that did not change, because it never needed Spring."
+
+[click] "A compiler plugin."
+
+[click] "One annotation. The compiler writes the serializer for this class at
+build time."
+
+[click] "So it does not inspect your class at runtime. A Kotlin compiler
+feature that no Spring release will take away."
+-->
+
+---
+
+# Sorted: JSON
+
+<div class="grid grid-cols-2 gap-10 mt-4">
+<div>
+
+<div class="text-2xl font-bold tracking-wider" style="color:#4ade80;opacity:1">LEVERAGE</div>
+<div class="text-sm opacity-50 mb-4">still pays in 2030</div>
+
+<div class="opacity-40">
+extension functions<br/>
+vararg reordering<br/>
+coroutines<br/>
+the bean DSL itself<br/>
+the security DSL<br/>
+suspend + nullability<br/>
+</div>
+
+<v-click>
+
+<div style="color:#4ade80">
+@Serializable<br/>
+</div>
+
+</v-click>
+
+</div>
+<div>
+
+<div class="text-2xl font-bold tracking-wider" style="color:#fb923c;opacity:1">SCAFFOLDING</div>
+<div class="text-sm opacity-50 mb-4">came due</div>
+
+<div class="opacity-40">
+-Xjsr305=strict<br/>
+the DSL glue<br/>
+authorizeRequests<br/>
+proxy-factory wiring<br/>
+</div>
+
+<v-click>
+
+<div style="color:#fb923c">
+converter registration<br/>
+</div>
+
+</v-click>
+
+</div>
+</div>
+
+<div class="mt-5 pt-3 border-t border-gray-700 text-sm">
+<span class="opacity-60">still to sort:</span> tests
+</div>
+
+<!--
+"Leverage or scaffolding?"
+
+[click] "The annotation and the compiler plugin: leverage."
+
+[click] "The config class that put the converter at index zero: scaffolding.
+Boot does it now."
+-->
+
+---
+layout: section
+---
+
+# Tests
+
+## Where the most scaffolding was hiding
+
+---
+
+# The 2024 test
+
+```kotlin {all|2|4-5|8|9}
+@SpringBootTest
+@AutoConfigureMockMvc
+class PersonApiTest {
+  @Autowired lateinit var mockMvc: MockMvc
+  @MockBean lateinit var people: PersonRepo
+
+  @Test
+  fun `finds a person`() = runBlocking {
+    whenever(people.findById(1)).thenReturn(Person(1, "Ann", 33.0))
+    mockMvc.get("/people/1").andExpect { status { isOk() } }
+  }
+}
+```
+
+<!--
+"Here is a test for the service we built. Before I say anything: how many
+of you have a lateinit var in your test sources right now?"
+
+(count it, briefly)
+
+[click] "MockMvc, because that was how you talked HTTP to the app."
+
+[click] "Two lateinit vars. Kotlin wants values in the constructor, and the
+test runner wanted a no-arg class. Lateinit was the compromise."
+
+[click] "runBlocking, because the repository is suspend and the test was not
+allowed to be."
+
+[click] "And whenever, from mockito-kotlin, because Mockito does not know what
+a suspend function is."
+-->
+
+---
+
+# It doesn't compile anymore
+
+<div class="text-2xl mt-6">
+
+<code class="line-through opacity-50">@MockBean</code> &nbsp; <code class="line-through opacity-50">@SpyBean</code> — <b>removed</b> in Boot 4
+
+</div>
+
+<v-click>
+
+<div class="text-xl mt-8">
+
+<code>@MockitoBean</code> · <code>@MockitoSpyBean</code> — in Spring Framework itself
+
+</div>
+
+</v-click>
+
+<v-click>
+
+<div class="text-xl mt-4" style="color:#4ade80">
+
+<code>@MockkBean</code> · <code>@MockkSpyBean</code> — SpringMockK 5, built on the same mechanism
+
+</div>
+
+</v-click>
+
+<!--
+"Deprecated in 3.4, removed in Boot 4. This test does not compile anymore."
+
+[click] "The replacement lives in Spring Framework, not Boot."
+
+[click] "And for Kotlin: SpringMockK 5 is a rewrite on top of that same
+mechanism. Same annotation you know, MockkBean. SpykBean is now MockkSpyBean."
+-->
+
+---
+
+# `suspend`, natively
+
+```kotlin {all|2|3}
+@Test
+suspend fun `finds a person`() {
+  coEvery { people.findById(1) } returns Person(1, "Ann", 33.0)
+  // ...
+}
+```
+
+<v-click>
+
+<div class="mt-6 text-lg">
+Spring Framework 7 requires <b>JUnit 6</b>. JUnit 6 runs <code>suspend</code> tests itself.
+</div>
+
+</v-click>
+
+<!--
+"Spring Framework 7 moved its baseline to JUnit 6, and JUnit 6 knows what a
+suspend function is."
+
+[click] "suspend, on the test. No runBlocking."
+
+[click] "coEvery from MockK, which always knew about suspend."
+
+[click] "One caveat, because someone will hit it: under the hood JUnit still
+uses runBlocking. If you need virtual time, to skip a delay, you still want
+runTest."
+-->
+
+---
+
+# Constructor, not `lateinit`
+
+```kotlin
+class PersonApiTest(@Autowired val client: RestTestClient)
+```
+
+<v-click>
+
+```properties
+# junit-platform.properties — once, for every test class
+spring.test.constructor.autowire.mode=all
+```
+
+</v-click>
+
+<!--
+"The lateinit was never necessary. Spring can inject the test's
+constructor."
+
+[click] "And if you do not want the annotation on every parameter, one line
+in junit-platform.properties turns it on for the whole test suite."
+-->
+
+---
+
+# `RestTestClient`
+
+```kotlin {all|1|4}
+client.get().uri("/people/1")
+  .exchange()
+  .expectStatus().isOk()
+  .expectBody<Person>()
+```
+
+<v-click>
+
+<div class="mt-6 text-lg">
+New in Framework 7. <code>expectBody&lt;Person&gt;()</code> is a <b>reified extension</b> — the same trick as <code>JdbcTemplate.query</code>.
+</div>
+
+</v-click>
+
+<!--
+"Framework 7 has a new test client: RestTestClient. Same fluent style as
+WebTestClient, but for the blocking stack, and it can sit on MockMvc or on a
+real port."
+
+[click] "Same calls you know."
+
+[click] "And this is the bit that should look familiar. expectBody of Person,
+with angle brackets, no class literal."
+
+[click] "A reified extension function. The same leverage as the JdbcTemplate
+one we wrote at the start, shipped by Spring this time."
+-->
+
+---
+
+# The 2026 test
+
+```kotlin {all|2|3|5|7-8}
+@SpringBootTest
+@AutoConfigureRestTestClient
+class PersonApiTest(@Autowired val client: RestTestClient) {
+
+  @MockkBean lateinit var people: PersonRepo
+
+  @Test
+  suspend fun `finds a person`() {
+    coEvery { people.findById(1) } returns Person(1, "Ann", 33.0)
+    client.get().uri("/people/1").exchange()
+      .expectStatus().isOk()
+      .expectBody<Person>()
+  }
+}
+```
+
+<!--
+"All of it together."
+
+[click] "Boot 4 does not hand you a test client on @SpringBootTest anymore —
+you ask for the one you want."
+
+[click] "The client comes through the constructor."
+
+[click] "One lateinit left, for the mock. Honest count: one, down from two."
+
+[click] "And the test is suspend. No runBlocking anywhere."
+-->
+
+---
+
+# Sorted: tests
+
+<div class="grid grid-cols-2 gap-10 mt-4">
+<div>
+
+<div class="text-2xl font-bold tracking-wider" style="color:#4ade80;opacity:1">LEVERAGE</div>
+<div class="text-sm opacity-50 mb-4">still pays in 2030</div>
+
+<div class="opacity-40">
+extension functions<br/>
+vararg reordering<br/>
+coroutines<br/>
+the bean DSL itself<br/>
+the security DSL<br/>
+suspend + nullability<br/>
+@Serializable<br/>
+</div>
+
+<v-click>
+
+<div style="color:#4ade80">
+reified expectBody&lt;T&gt;()<br/>
+</div>
+
+</v-click>
+
+</div>
+<div>
+
+<div class="text-2xl font-bold tracking-wider" style="color:#fb923c;opacity:1">SCAFFOLDING</div>
+<div class="text-sm opacity-50 mb-4">came due</div>
+
+<div class="opacity-40">
+-Xjsr305=strict<br/>
+the DSL glue<br/>
+authorizeRequests<br/>
+proxy-factory wiring<br/>
+converter registration<br/>
+</div>
+
+<v-click>
+
+<div style="color:#fb923c">
+runBlocking in tests<br/>
+@MockBean<br/>
+</div>
+
+</v-click>
+
+</div>
+</div>
+
+<!--
+"Last one. Leverage or scaffolding?"
+
+[click] "The reified extension: leverage. It was leverage in 2024 in our own
+code, and it is leverage now that Spring ships it."
+
+[click] "runBlocking and MockBean: scaffolding. Both gone, one by JUnit, one
+by Boot."
 -->
 
 ---
@@ -1781,17 +2297,18 @@ write Spring in Kotlin, and [N] of you had this flag." — the two numbers you c
 - HttpServiceProxyFactory.builderFor(adapter).build()
 - class UserRowMapper implements RowMapper<Person>
 - .authorizeRequests { }
+- converters.add(0, KotlinSerializationJsonHttpMessageConverter())
+- @MockBean lateinit var people: PersonRepo
+- fun `finds a person`() = runBlocking {
 ```
 
 <!--
-"Your recap is a diff, not a to-do list. Seven deletions — one per surface we
-sorted. That is what your Kotlin-and-Spring codebase looks like on Monday if
-you act on this talk: smaller, in seven specific places."
+"Your recap is a diff, not a to-do list. Ten deletions. That is what your
+Kotlin-and-Spring codebase looks like on Monday if you act on this talk:
+smaller, in ten specific places."
 
 (let them photograph it — PAUSE and stop talking)
 
-WALK-AROUND register C — this is the "who does this affect and how does it
-land" claim.
 -->
 
 ---
@@ -1810,14 +2327,13 @@ against a future release.
 </v-click>
 
 <!--
-"Everything else I said today has a shelf life. I know that, because half of
+[click] "Everything else I said today has a shelf life. I know that, because half of
 this talk was me correcting the other half."
 
 "This does not. Ask it of any Kotlin trick you use with Spring: could a
 framework release make this unnecessary? If yes, you are holding scaffolding —
 fine, use it, and know it comes due. If no, it compounds."
 
-WALK-AROUND register D — the implication claim.
 -->
 
 ---
@@ -1835,7 +2351,10 @@ WALK-AROUND register D — the implication claim.
 </v-clicks>
 
 <!--
-"One thing today, one thing this month, one habit. The first two are
+"One thing today,"
+[click] (Today row) "delete the flag, fix kotlinOptions."
+[click] (This month row) "replace the initializer glue with @Import."
+[click] (Ongoing row) "and one habit: sort before you adopt. The first two are
 find-and-replace. The third is the one that matters."
 -->
 
