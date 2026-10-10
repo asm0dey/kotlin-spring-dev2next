@@ -17,6 +17,8 @@ layout: intro
 
 ## Pasha Finkelshteyn <logos-kotlin-icon /><logos-spring-icon />
 
+<div class="mt-4 text-xl opacity-75">Leverage vs. scaffolding in Spring 7 and Boot 4</div>
+
 <div class="mt-8 text-sm opacity-60"><a href="https://asm0dey.site">asm0dey.site</a> | #dev2next | #kotlin</div>
 
 <!--
@@ -110,7 +112,7 @@ strictly, on its own, with no flag."
 [click] "So the flag is not wrong. It is not harmful. It is unemployed. It is doing a
 job that the compiler and the framework now do without being asked."
 
-The doc quotes are the proof. Do not paraphrase them.
+Use the doc quotes verbatim; they are the proof.
 
 IF ASKED "wasn't that flag what made request validation work?" — it was not,
 and this is worth being precise about because half the blog posts filed it
@@ -195,8 +197,7 @@ Source: https://kotlinlang.org/docs/gradle-compiler-options.html — deprecated 
 "There is a second thing wrong with that slide, and it is funnier.
 kotlinOptions was deprecated in Kotlin 2.0 and removed in 2.2."
 
-Flat, not apologetic. This is the material, not a defect.
-Do NOT say sorry. Do NOT say "I forgot to update this".
+Keep it factual rather than apologetic. This is the material, not a defect.
 
 [click] "So the slide I opened with does not merely give stale advice. Copy it
 into a project today and it does not build."
@@ -260,7 +261,7 @@ job."
 "That is the entire employer segment. Link is at the end if you want it; if
 not, that is completely fine and it will not come up again."
 
-Do not expand. Do not mention the product line. Move on.
+Leave it there and move on.
 -->
 
 ---
@@ -1122,7 +1123,7 @@ layout: statement
 ## Guess how.
 
 <!--
-This is the big one. Do not rush it.
+This is the big one. Give it room.
 
 "Before I show you: what would you have done?"
 
@@ -1282,6 +1283,9 @@ framework release makes unnecessary."
 [click] "The initializer and the yaml property were scaffolding around a hole, and the
 hole is filled. Same section of the same talk, one row in each column. That is
 why the sorting question is worth asking per technique and not per chapter."
+
+CUT LINE: if the talk is more than three minutes behind, skip Security and go
+straight to "Coroutines or virtual threads?" The ledger still reads cleanly.
 -->
 
 ---
@@ -1362,8 +1366,9 @@ lost ten minutes to it, because there is nothing to auto-complete."
 
 [click] "And authorizeRequests is gone. It is authorizeHttpRequests now. If you
 learned this from anything written before 2024, yours says the old one. So does
-mine. That is scaffolding of a third kind — the kind where the API just moved
-underneath everybody at once."
+mine. From the call site this looks like a rename; underneath it moved Spring
+Security from the old access-decision machinery to AuthorizationManager. That
+is API migration, not scaffolding."
 -->
 
 ---
@@ -1381,7 +1386,6 @@ extension functions<br/>
 vararg reordering<br/>
 coroutines<br/>
 the bean DSL itself<br/>
-the security DSL<br/>
 </div>
 
 <v-click>
@@ -1401,13 +1405,12 @@ the security DSL<br/>
 <div class="opacity-40">
 -Xjsr305=strict<br/>
 the DSL glue<br/>
-authorizeRequests<br/>
 </div>
 
 <v-click>
 
-<div style="color:#fb923c">
-authorizeRequests<br/>
+<div class="opacity-40 italic">
+— none this round —
 </div>
 
 </v-click>
@@ -1427,9 +1430,9 @@ Ask before either click lands.
 [click] "The DSL itself is leverage — it is a lambda with a receiver, and it
 nests inside the bean registrar. No Spring release makes that unnecessary."
 
-[click] "authorizeRequests is the third kind: not a hole that got filled, just
-an API that moved underneath everybody at once. Scaffolding all the same —
-it came due."
+[click] "And nothing enters the scaffolding column this round.
+authorizeRequests becoming authorizeHttpRequests is a migration: same job,
+new authorization API. It does not belong in this ledger."
 -->
 
 ---
@@ -1452,7 +1455,7 @@ class: text-center
 <v-click>
 
 <div class="mt-12 text-3xl">
-2026: a blocking call <b>unmounts</b> the virtual thread.
+2026: blocking socket I/O usually <b>unmounts</b> the virtual thread.
 </div>
 
 <div class="mt-4 text-xl opacity-70">
@@ -1465,7 +1468,10 @@ The carrier thread is released and runs someone else.
 "Notice what my 2024 argument actually rested on. Not that
 coroutines are elegant — that the alternative was unacceptable."
 
-[click] "Loom removed the alternative's cost, so the argument has to be re-made rather than repeated."
+[click] "For ordinary JDBC socket waits, Loom usually releases the carrier
+thread. The virtual thread is still blocked, but the scarce platform thread is
+free to run something else. So the argument has to be re-made rather than
+repeated."
 -->
 
 ---
@@ -1553,15 +1559,16 @@ true now."
 
 <div class="mt-6 text-sm opacity-60">
 
-\* preview since JDK 21 — sixth preview in 26 (JEP 525), seventh proposed for 27.<br/>
+\* preview since JDK 21 — sixth preview in 26 (JEP 525), seventh preview in 27 (JEP 533).<br/>
 On JDK 21–23 <code>synchronized</code> pinned too, which is why JDBC drivers,
 HikariCP and Caffeine moved to <code>ReentrantLock</code>. JEP 491 fixed that in JDK 24.
+<br/>Source: OpenJDK JEP 491, JEP 525, JEP 533.
 </div>
 
 </v-click>
 
 <!--
-Deliberately unhurried. Do not rush this list.
+Take this list slowly.
 
 "Virtual threads make blocking cheap."
 
@@ -1629,7 +1636,7 @@ cancellation or back-pressure</b> — not for "non-blocking".
 "Two ways to fetch two things at once. One of them has been stable since 2018."
 
 [click] This is the sentence people will quote in the hallway. Deliver it
-slowly and do NOT qualify it afterwards.
+slowly and let it stand before moving on.
 
 "They are not competitors. Coroutines can run on virtual threads. But if you
 are choosing, choose on the feature you actually need, not on the word
@@ -1792,7 +1799,6 @@ suspend + nullability<br/>
 <div class="opacity-40">
 -Xjsr305=strict<br/>
 the DSL glue<br/>
-authorizeRequests<br/>
 </div>
 
 <v-click>
@@ -1973,7 +1979,6 @@ suspend + nullability<br/>
 <div class="opacity-40">
 -Xjsr305=strict<br/>
 the DSL glue<br/>
-authorizeRequests<br/>
 proxy-factory wiring<br/>
 </div>
 
@@ -1999,6 +2004,9 @@ converter registration<br/>
 
 [click] "The config class that put the converter at index zero: scaffolding.
 Boot does it now."
+
+CUT LINE: if the talk is more than six minutes behind, skip JSON and continue
+with Tests. Its verdict is already visible in the final recap.
 -->
 
 ---
@@ -2247,7 +2255,6 @@ reified expectBody&lt;T&gt;()<br/>
 <div class="opacity-40">
 -Xjsr305=strict<br/>
 the DSL glue<br/>
-authorizeRequests<br/>
 proxy-factory wiring<br/>
 converter registration<br/>
 </div>
@@ -2280,7 +2287,7 @@ image: /slide-2024-jsr305-struck.png
 ---
 
 <!--
-"Fifty minutes ago I asked who had this in a build file, [M] of you said you
+"At the start I asked who had this in a build file, [M] of you said you
 write Spring in Kotlin, and [N] of you had this flag." — the two numbers you counted at the start.
 
 -->
@@ -2296,16 +2303,15 @@ write Spring in Kotlin, and [N] of you had this flag." — the two numbers you c
 - context.initializer.classes: "…"
 - HttpServiceProxyFactory.builderFor(adapter).build()
 - class UserRowMapper implements RowMapper<Person>
-- .authorizeRequests { }
 - converters.add(0, KotlinSerializationJsonHttpMessageConverter())
 - @MockBean lateinit var people: PersonRepo
 - fun `finds a person`() = runBlocking {
 ```
 
 <!--
-"Your recap is a diff, not a to-do list. Ten deletions. That is what your
+"Your recap is a diff, not a to-do list. Nine deletions. That is what your
 Kotlin-and-Spring codebase looks like on Monday if you act on this talk:
-smaller, in ten specific places."
+smaller, in nine specific places."
 
 (let them photograph it — PAUSE and stop talking)
 
