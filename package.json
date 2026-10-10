@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "slidev dev2next26-advanced-kotlin-spring.md",
+    "build": "slidev build dev2next26-advanced-kotlin-spring.md",
+    "export": "slidev export dev2next26-advanced-kotlin-spring.md",
+    "export-pdf": "slidev export dev2next26-advanced-kotlin-spring.md --with-clicks --format pdf --output dist/index.pdf"
+  },
+  "dependencies": {
+    "@slidev/cli": "^52.19.1",
+    "@slidev/theme-apple-basic": "^0.25.1"
+  },
+  "name": "dev2next26-advanced-kotlin-spring",
+  "devDependencies": {
+    "@iconify-json/logos": "^1.2.13",
+    "playwright-chromium": "^1.62.1"
+  }
+}

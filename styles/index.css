@@ -1,0 +1,24 @@
+/* Reserve space for the global-bottom footer so slide content can never
+   collide with it. Excludes full-bleed layouts (image/intro/end), which
+   deliberately have no footer. */
+.slidev-layout.default,
+.slidev-layout.statement,
+.slidev-layout.section,
+.slidev-layout.quote,
+.slidev-layout.two-cols-header,
+.slidev-layout.two-cols,
+.slidev-layout.image-right,
+.slidev-layout.image-left {
+  padding-bottom: 4.25rem;
+}
+
+/* Statement slides: the theme's default line-height collides on two-line
+   headings, and the sub-line sits too close under it. */
+.slidev-layout.statement h1 { line-height: 1.18; }
+.slidev-layout.statement h2 { margin-top: 1.6rem; opacity: .85; }
+
+/* Two-column layouts need a real gutter, or adjacent code blocks touch. */
+.slidev-layout.two-cols-header,
+.slidev-layout.two-cols { column-gap: 3rem; }
+.slidev-layout.two-cols-header .col-right,
+.slidev-layout.two-cols .col-right { padding-left: 2rem; }
