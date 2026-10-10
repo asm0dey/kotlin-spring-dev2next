@@ -225,7 +225,7 @@ image: /avatar.jpg
 
 **Pasha Finkelshteyn** · <a href="https://asm0dey.site" target="_blank">asm0dey.site</a>
 
-<div class="mt-6 opacity-80">I gave this talk in 2024. This is what changed since.</div>
+<div class="mt-6 opacity-80">This advice was everywhere in 2022–24 — including in my own talks. Here is what changed.</div>
 
 <div class="mt-5 text-sm opacity-60">
 I work on <b>Liberica JDK</b> at BellSoft.
@@ -259,7 +259,7 @@ Do not expand. Do not mention the product line. Move on.
 
 ```text {all|2|3|4|5|6}
 sample/
-  Person.kt          — entity
+  Person.kt          — the domain
   PersonRepo.kt      — JDBC + R2DBC
   PersonClient.kt    — HTTP
   Beans.kt           — registration + security
@@ -275,11 +275,10 @@ every comparison today is a diff against it."
 
 # The build file, 2026
 
-```kotlin {all|1-7|9-11|12}
+```kotlin {all|1-6|8-10|11}
 plugins {
   kotlin("jvm") version "2.4.21"
   kotlin("plugin.spring") version "2.4.21"
-  kotlin("plugin.jpa") version "2.4.21"
   id("org.springframework.boot") version "4.1.1"
   id("io.spring.dependency-management") version "1.1.7"
 }
@@ -292,7 +291,7 @@ kotlin {
 
 <!--
 
-[click] plugins: "Three Kotlin plugins, all on the same version. Note that they
+[click] plugins: "Two Kotlin plugins, both on the same version. Note that they
 are on the same version."
   Dry. This is the ONLY reference to the 2024 version-mismatch
   slide, and it is made by the code, not by an apology.
@@ -331,173 +330,15 @@ are on the same version."
 </div>
 
 <div class="mt-5 pt-3 border-t border-gray-700 text-sm">
-<span class="opacity-60">still to sort:</span> JPA entities · extensions & varargs · coroutines · the bean DSL · the security DSL · HTTP clients
+<span class="opacity-60">still to sort:</span> extensions & varargs · coroutines · the bean DSL · the security DSL · HTTP clients
 </div>
 
 <!--
 This table returns at the end of every chapter with one
 more row filled.
 
-"One row already filled. Six to go. Every chapter ends here, and by the last
+"One row already filled. Five to go. Every chapter ends here, and by the last
 one you will have a rule you can apply to code I have never seen."
--->
-
----
-layout: section
----
-
-# JPA
-
-## The advice that held
-
-<!--
-"We start with a counterexample, because I do not want you leaving
-here thinking the whole playbook rotted. Some of it held."
--->
-
----
-
-# The entity, then and now
-
-````md magic-move
-```kotlin
-@Entity
-data class Person(
-  @Id @GeneratedValue(strategy = IDENTITY)
-  var id: Int? = null,
-  @Column(nullable = false)
-  val name: String,
-  @Column(nullable = false)
-  val age: Int,
-)
-```
-```kotlin
-@Entity
-class Person(
-  @Id @GeneratedValue(strategy = IDENTITY)
-  var id: Int? = null,
-  @Column(nullable = false)
-  val name: String,
-  @Column(nullable = false)
-  val age: Int,
-)
-```
-```kotlin
-@Entity
-class Person(
-  @Id @GeneratedValue(strategy = IDENTITY)
-  var id: Int? = null,
-  @Column(nullable = false)
-  var name: String,
-  @Column(nullable = false)
-  var age: Int,
-)
-```
-````
-
-<div class="relative mt-6 text-lg" style="height:5.5rem">
-
-<div v-click="[0,1]" class="absolute inset-0">
-The first thing everybody writes.
-</div>
-
-<div v-click="[1,2]" class="absolute inset-0">
-<code>data</code> drops — <code>equals</code>/<code>hashCode</code> built from an
-<code>id</code> that changes the moment you persist, and <code>copy</code> hands
-you a detached twin. Hibernate can't proxy it either.
-</div>
-
-<div v-click="[2,3]" class="absolute inset-0">
-<code>val</code> becomes <code>var</code> — JPA writes to the field.
-</div>
-
-</div>
-
-<!--
-magic-move, three states.
-
-[state 1] "data class for a JPA entity. It is the first thing everybody writes
-and it is still wrong, for exactly the reasons it was wrong in 2024."
-
-[state 2] "equals and hashCode generated from every property, including the
-generated id, on an object whose identity changes the moment it is persisted.
-copy hands you a detached twin. Hibernate cannot proxy it."
-
-[state 3] "And val does not work, because JPA writes to the field."
--->
-
----
-
-# Why it works at all
-
-```kotlin
-kotlin("plugin.jpa")
-```
-
-<v-clicks>
-
-- puts the annotations where JPA expects them
-- synthesises a **no-arg constructor in bytecode**
-
-</v-clicks>
-
-<v-click>
-
-<div class="mt-8 text-xl">Kotlin has no no-arg constructor here. The bytecode does.</div>
-
-</v-click>
-
-<!--
-"There is no no-arg constructor in that Kotlin source, and JPA
-requires one. The plugin writes it into the bytecode. You cannot call it from
-Kotlin, and Hibernate can, which is the whole trick."
--->
-
----
-
-# Sorted: JPA
-
-<div class="grid grid-cols-2 gap-10 mt-4">
-<div>
-
-<div class="text-2xl font-bold tracking-wider" style="color:#4ade80;opacity:1">LEVERAGE</div>
-<div class="text-sm opacity-50 mb-4">still pays in 2030</div>
-
-<span class="opacity-30 italic">— none yet —</span>
-</div>
-<div>
-
-<div class="text-2xl font-bold tracking-wider" style="color:#fb923c;opacity:1">SCAFFOLDING</div>
-<div class="text-sm opacity-50 mb-4">came due</div>
-
-<div class="opacity-40">
--Xjsr305=strict<br/>
-</div>
-
-</div>
-</div>
-
-<v-click>
-
-<div class="mt-5 text-center ">JPA entities — <b>UNCHANGED</b></div>
-
-</v-click>
-
-<div class="mt-5 pt-3 border-t border-gray-700 text-sm">
-<span class="opacity-60">still to sort:</span> extensions & varargs · coroutines · the bean DSL · the security DSL · HTTP clients
-</div>
-
-<v-click>
-
-<div class="mt-4 text-center text-xl">Advice that still holds is the control group.</div>
-
-</v-click>
-
-<!--
-"Neither. Some advice just holds."
-
-"Also: define equals and hashCode by hand, return a constant or the id, and
-read Vlad Mihalcea on it rather than trusting me. That has not changed either."
 -->
 
 ---
@@ -736,8 +577,6 @@ vararg reordering<br/>
 
 </div>
 </div>
-
-<div class="mt-5 text-center opacity-70">JPA entities — <b>UNCHANGED</b></div>
 
 <div class="mt-5 pt-3 border-t border-gray-700 text-sm">
 <span class="opacity-60">still to sort:</span> coroutines · the bean DSL · the security DSL · HTTP clients
@@ -1036,8 +875,6 @@ coroutines<br/>
 
 </div>
 </div>
-
-<div class="mt-5 text-center opacity-70">JPA entities — <b>UNCHANGED</b></div>
 
 <div class="mt-5 pt-3 border-t border-gray-700 text-sm">
 <span class="opacity-60">still to sort:</span> the bean DSL · the security DSL · HTTP clients
@@ -1387,8 +1224,6 @@ the DSL glue<br/>
 </div>
 </div>
 
-<div class="mt-5 text-center opacity-70">JPA entities — <b>UNCHANGED</b></div>
-
 <div class="mt-5 pt-3 border-t border-gray-700 text-sm">
 <span class="opacity-60">still to sort:</span> the security DSL · HTTP clients
 </div>
@@ -1530,8 +1365,6 @@ authorizeRequests<br/>
 
 </div>
 </div>
-
-<div class="mt-5 text-center opacity-70">JPA entities — <b>UNCHANGED</b></div>
 
 <div class="mt-5 pt-3 border-t border-gray-700 text-sm">
 <span class="opacity-60">still to sort:</span> HTTP clients
@@ -1904,8 +1737,6 @@ proxy-factory wiring<br/>
 </div>
 </div>
 
-<div class="mt-5 text-center opacity-70">JPA entities — <b>UNCHANGED</b></div>
-
 <!--
 Ask, then WAIT.
 
@@ -1922,8 +1753,8 @@ image: /slide-2024-jsr305-struck.png
 ---
 
 <!--
-"Fifty minutes ago I asked who had this in a build file, and most of this room
-put a hand up."
+"Fifty minutes ago I asked who had this in a build file, and [N] of you
+put a hand up." — say the actual number you counted at the start.
 
 -->
 
